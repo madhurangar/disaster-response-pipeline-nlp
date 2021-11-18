@@ -70,7 +70,25 @@ def build_model():
         ('clf', MultiOutputClassifier(RandomForestClassifier(), n_jobs=-1))
         ])
     
-    return pipeline
+    # parameters to optimise
+    parameters = {
+        'clf__estimator__bootstrap': [True, False],
+        'clf__estimator__max_depth': [100, 200, None],
+        'clf__estimator__max_features': ['auto', 'sqrt'],
+        'clf__estimator__n_estimators': [100, 200, 250, 300],
+        'clf__estimator__min_samples_leaf': [2, 4],
+        'clf__estimator__min_samples_split': [5, 10],
+        'clf__estimator__n_estimators': [100, 200, 500]
+    }
+
+    # cross validation
+    cv = GridSearchCV(pipeline, 
+        param_grid=parameters,
+        scoring=utils.model_scorer, 
+        verbose=3
+        )
+        
+    return cv
 
 
 def evaluate_model(model, X_test, Y_test):
