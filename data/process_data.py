@@ -72,7 +72,7 @@ def save_data(df:pd.DataFrame, database_filename:str)->None:
         database_filename (str): SQL datasase file name
     """
     engine = create_engine(f'sqlite:///{database_filename}')
-    df.to_sql('Messages', engine, index=False)  
+    df.to_sql('Messages', engine, index=False, if_exists="replace")  
 
 
 def main():
